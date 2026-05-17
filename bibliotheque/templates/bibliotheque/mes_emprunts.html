@@ -1,0 +1,38 @@
+{% extends 'bibliotheque/base.html' %}
+{% block title %}Mes emprunts{% endblock %}
+{% block content %}
+<h3 class="mb-4"><i class="fas fa-bookmark me-2"></i>Mes emprunts</h3>
+<div class="table-responsive">
+  <table class="table table-hover bg-white rounded">
+    <thead class="table-dark">
+      <tr><th>Livre</th><th>Date emprunt</th><th>Retour prévu</th><th>Statut</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      {% for e in emprunts %}
+      <tr>
+        <td>{{ e.livre.titre }}</td>
+        <td>{{ e.date_sortie }}</td>
+        <td>{{ e.date_retour_prevue }}</td>
+        <td>
+          {% if e.rendu %}
+            <span class="badge bg-success">Rendu</span>
+          {% else %}
+            <span class="badge bg-warning text-dark">En cours</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if not e.rendu %}
+          <form method="POST" action="{% url 'retourner_livre' e.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-success">Retourner</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="text-center text-muted">Aucun emprunt.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

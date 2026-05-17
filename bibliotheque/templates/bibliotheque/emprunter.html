@@ -1,0 +1,18 @@
+{% extends 'bibliotheque/base.html' %}
+{% block title %}Emprunter{% endblock %}
+{% block content %}
+<div class="card" style="max-width:500px; margin:auto;">
+  <div class="card-header"><h5><i class="fas fa-hand-holding-heart me-2"></i>Emprunter « {{ livre.titre }} »</h5></div>
+  <div class="card-body">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Date de retour prévue</label>
+        {{ form.date_retour_prevue }}
+      </div>
+      <button type="submit" class="btn btn-success">Confirmer l'emprunt</button>
+      <a href="{% url 'detail_livre' livre.pk %}" class="btn btn-secondary ms-2">Annuler</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

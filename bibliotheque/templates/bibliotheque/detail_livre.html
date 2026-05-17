@@ -1,0 +1,29 @@
+{% extends 'bibliotheque/base.html' %}
+{% block title %}{{ livre.titre }}{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header"><h4>{{ livre.titre }}</h4></div>
+  <div class="card-body">
+    <dl class="row">
+      <dt class="col-sm-3">Auteur</dt><dd class="col-sm-9">{{ livre.auteur }}</dd>
+      <dt class="col-sm-3">Catégorie</dt><dd class="col-sm-9">{{ livre.categorie }}</dd>
+      <dt class="col-sm-3">ISBN</dt><dd class="col-sm-9">{{ livre.isbn }}</dd>
+      <dt class="col-sm-3">Description</dt><dd class="col-sm-9">{{ livre.description|default:"—" }}</dd>
+      <dt class="col-sm-3">Statut</dt>
+      <dd class="col-sm-9">
+        <span class="badge {% if livre.disponible %}bg-success{% else %}bg-danger{% endif %} fs-6">
+          {% if livre.disponible %}Disponible{% else %}Emprunté{% endif %}
+        </span>
+      </dd>
+    </dl>
+    <div class="d-flex gap-2 mt-3">
+      {% if user.is_authenticated and livre.disponible %}
+        <a href="{% url 'emprunter_livre' livre.pk %}" class="btn btn-success">
+          <i class="fas fa-hand-holding-heart me-2"></i>Emprunter
+        </a>
+      {% endif %}
+      <a href="{% url 'liste_livres' %}" class="btn btn-outline-secondary">← Retour</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
